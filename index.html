@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>listen event</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="">
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<style>
+		.screen{
+			color: white;
+			font-size: 14px;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-1 col-offset-md-2">
+			<button id="btnUpdate" class="btn btn-default">update</button>
+		</div>
+		<div class="col-sm-3">
+			<div style="padding: 20px; border: 1px solid black">
+				<div class="screen" id="anh" style="background-color: gray; height: 400px"></div>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div style="padding: 20px; border: 1px solid black">
+				<div class="screen" id="minh" style="background-color: gray; height: 400px"></div>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div style="padding: 20px; border: 1px solid black">
+				<div class="screen" id="khoa" style="background-color: gray; height: 400px"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+<script type="text/javascript">
+	(function($){
+		window.Manager = function(){
+			this.listeners = [];
+			this.notifychange = function(data){
+				for(var i in this.listeners){
+					if(this.listeners.hasOwnProperty(i)){
+						this.listeners[i].update(data);
+					}
+				}
+			};
+			this.addListener = function(listener){
+				this.listeners.push(listener);
+			}
+		};
+
+		var anh = $("#anh");
+		anh.update = function(data){
+			this.empty();
+			this.append("<h1>Anh Le Hoang</h1>");
+			this.append("<blockquote>up to now:" + data +"</blockquote>");
+		};
+
+		var minh = $("#minh");
+		minh.update = function(data){
+			this.empty();
+			this.append("<h2>Minh Tran Hoang</h2>");
+			this.append("<code>up to now:" + data +"</code>");
+		};
+
+		var khoa = $("#khoa");
+		khoa.update = function(data){
+			this.empty();
+			this.append("<h3>Khoa Than Doan Dang</h3>");
+			this.append("<button class='btn btn-default'>up to now:" + data +"</button>");
+		};
+
+
+		$("#btnUpdate").on("click", function(){
+			console.log("btnUpdate clicked");
+			var data = new Date();
+			manager.notifychange(data.getTime());
+		});
+
+		var manager = new Manager();
+		manager.addListener(anh);
+		manager.addListener(minh);
+		manager.addListener(khoa);
+	})(jQuery);
+</script>
+</html>
